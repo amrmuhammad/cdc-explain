@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "cdc-explain"
+version = "0.1.0"
+description = "AI-powered CDC bug explainer for the Verilator ecosystem"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+dependencies = [
+    "click",
+    "vcdvcd",
+    "openai",
+    "python-dotenv",
+]
+
+[project.scripts]
+cdc-explain = "cli.main:cli"
