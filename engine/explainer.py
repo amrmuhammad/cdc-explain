@@ -1,6 +1,6 @@
 from engine.log_parser import extract_failure
 from engine.cdc_ingestor import load_cdc_violations
-from engine.vcd_reader import get_final_signal_values
+from engine.vcd_reader import get_signal_timeline
 from engine.prompt_builder import build_prompt
 from openai import OpenAI
 
@@ -11,6 +11,7 @@ SIGNALS_OF_INTEREST = [
     "TOP.dual_clock_fifo.wr_en_sync",
     "TOP.dual_clock_fifo.empty",
     "TOP.dual_clock_fifo.rd_data[7:0]",
+    "TOP.dual_clock_fifo.wr_ack",
 ]
 
 def run_explanation(log_path, vcd_path, cdc_path, llm_client=None, dry_run=False):
@@ -20,13 +21,16 @@ def run_explanation(log_path, vcd_path, cdc_path, llm_client=None, dry_run=False
         return "No simulation failure found in log."
 
     cdc_violations = load_cdc_violations(cdc_path)
-    final_signals = get_final_signal_values(vcd_path, SIGNALS_OF_INTEREST)
-    prompt = build_prompt(failure, final_signals, cdc_violations)
+
+    # Get timeline of all relevant signal changes (no time filter for now)
+    timeline = get_signal_timeline(vcd_path, SIGNALS_OF_INTEREST)
+
+    prompt = build_prompt(failure, timeline, cdc_violations)
 
     if dry_run:
         return prompt
 
-    # Local Ollama via OpenAI‑compatible endpoint
+    # Use Ollama local endpoint
     if llm_client is None:
         llm_client = OpenAI(
             base_url="http://localhost:11434/v1",
