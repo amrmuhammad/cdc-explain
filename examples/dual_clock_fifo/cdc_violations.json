@@ -1,0 +1,11 @@
+[
+  {
+    "source_signal": "wr_en",
+    "source_clock": "clk_write",
+    "destination_signal": "wr_sync_ff",
+    "destination_clock": "clk_read",
+    "violation_type": "Missing pulse synchronizer",
+    "description": "wr_en is a single-cycle pulse on clk_write. It is passed through a standard 2-FF synchronizer without any pulse stretching or handshake. The slower clk_read may miss the pulse entirely.",
+    "recommendation": "Use a pulse synchronizer (toggle synchronizer) or a handshake protocol to guarantee the pulse is captured."
+  }
+]
