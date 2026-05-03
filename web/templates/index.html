@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CDC Explain AI</title>
+    <style>
+        body { font-family: sans-serif; max-width: 900px; margin: 2rem auto; padding: 1rem; }
+        .drop-zone {
+            border: 2px dashed #aaa;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            background-color: #fafafa;
+        }
+        .drop-zone.dragover { background-color: #e0f0ff; border-color: #2a73cc; }
+        input[type="file"] { margin: 0.5rem 0; }
+        button {
+            background-color: #2a73cc;
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover { background-color: #1f5ca3; }
+        .result {
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            padding: 1.5rem;
+            white-space: pre-wrap;
+            font-family: monospace;
+            margin-top: 2rem;
+            border-radius: 4px;
+        }
+        h1 { color: #333; }
+    </style>
+</head>
+<body>
+    <h1>🔍 CDC Explain AI</h1>
+    <p>Upload your simulation files and get an AI root‑cause analysis.</p>
+
+    <form id="upload-form" action="/explain" method="post" enctype="multipart/form-data">
+        <div class="drop-zone" id="drop-zone">
+            <p>Drop files here or click to browse</p>
+            <label>VCD Waveform: <input type="file" name="vcd" required accept=".vcd"></label><br>
+            <label>Simulation Log: <input type="file" name="log" required accept=".log,.txt"></label><br>
+            <label>CDC Violations (JSON): <input type="file" name="cdc" required accept=".json"></label>
+        </div>
+        <button type="submit">Explain Failure</button>
+    </form>
+
+    {% if result %}
+    <div class="result">{{ result }}</div>
+    {% endif %}
+
+    <script>
+        const dropZone = document.getElementById('drop-zone');
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dragover');
+        });
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            const fileInputs = document.querySelectorAll('input[type="file"]');
+            // Assign files to inputs by name or order (simplified: just fill first available)
+            for (let i = 0; i < Math.min(files.length, fileInputs.length); i++) {
+                fileInputs[i].files = files[i];
+            }
+        });
+    </script>
+</body>
+</html>
