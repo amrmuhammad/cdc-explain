@@ -225,3 +225,9 @@ examples/dual_clock_fifo/dump.vcd
 examples/dual_clock_fifo/sim.log
 examples/dual_clock_fifo/verilator_cdc.txt
 examples/dual_clock_fifo/obj_dir/
+
+# Verilator build artifacts
+**/obj_dir/
+*.vcd
+sim.log
+verilator_cdc.txt

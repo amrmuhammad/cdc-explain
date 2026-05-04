@@ -1,7 +1,0 @@
-%Warning-UNUSEDSIGNAL: top.v:3:17: Signal is not used: 'clk_fast'
-                                 : ... note: In instance 'top'
-    3 |     input  wire clk_fast,
-      |                 ^~~~~~~~
-                       ... For warning description see https://verilator.org/warn/UNUSEDSIGNAL?v=5.048
-                       ... Use "/* verilator lint_off UNUSEDSIGNAL */" and lint_on around source to disable this message.
-%Error: Exiting due to 1 warning(s)
