@@ -1,0 +1,12 @@
+[
+  {
+    "source_signal": "pulse_in",
+    "source_clock": "clk_fast",
+    "destination_signal": "sync_ff",
+    "destination_clock": "clk_slow",
+    "violation_type": "Missing pulse synchronizer",
+    "description": "pulse_in is a single-cycle pulse in the fast domain. It is passed through a standard 2‑FF synchronizer into the slow domain without any pulse stretching. If the pulse occurs between two slow clock edges, it is permanently missed.",
+    "recommendation": "Use a pulse synchronizer (toggle synchronizer) or handshake protocol to guarantee detection of every pulse.",
+    "monitor_signals": ["flag_out"]
+  }
+]
